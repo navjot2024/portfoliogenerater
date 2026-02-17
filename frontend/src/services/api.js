@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = '/api';
+// Use REACT_APP_API_URL for production backend URL (set at build time).
+// Falls back to '/api' which is useful for local development where CRA proxy is used.
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 // Create axios instance with default config
 const api = axios.create({
