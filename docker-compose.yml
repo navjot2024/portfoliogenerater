@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: portfolio_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017" # Expose for local development
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: portfolio-generator
+
+volumes:
+  mongo_data: {}

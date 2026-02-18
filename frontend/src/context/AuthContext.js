@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -22,11 +23,8 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('/api/auth/me', {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
+          // use api instance so baseURL and interceptors are applied
+          const response = await api.get('/auth/me');
           setUser(response.data.data);
         } catch (err) {
           console.error('Auth check failed:', err);
@@ -42,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     setError(null);
     try {
-      const response = await axios.post('/api/auth/register', {
+      const response = await api.post('/auth/register', {
         name,
         email,
         password
@@ -61,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setError(null);
     try {
-      const response = await axios.post('/api/auth/login', {
+      const response = await api.post('/auth/login', {
         email,
         password
       });
@@ -78,12 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.get('/api/auth/logout', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await api.get('/auth/logout');
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
@@ -95,12 +88,7 @@ export const AuthProvider = ({ children }) => {
   const updateUser = async (updates) => {
     setError(null);
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put('/api/auth/updatedetails', updates, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const response = await api.put('/auth/updatedetails', updates);
       
       setUser(response.data.data);
       return { success: true };
