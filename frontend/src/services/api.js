@@ -4,6 +4,12 @@ import axios from 'axios';
 // Falls back to '/api' which is useful for local development where CRA proxy is used.
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
+// Helpful debug log so deployed frontends show which API base they will call.
+if (typeof window !== 'undefined') {
+  // eslint-disable-next-line no-console
+  console.info('API base URL set to:', API_URL);
+}
+
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_URL,
