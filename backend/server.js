@@ -9,6 +9,7 @@ const hpp = require('hpp');
 require('dotenv').config();
 
 // Initialize Express app
+const cors = require('cors');
 const app = express();
 
 // Security Middleware
